@@ -1,10 +1,14 @@
-# cuteoptionstrats
+# CuteMarkets Intraday Option Strategies
 
-`cuteoptionstrats` is a thin public wrapper around [`cutebacktests`](https://github.com/cutemarkets/cutebacktests) for one curated intraday options model: `c36_quality`.
+`cuteoptionstrats` packages one curated intraday U.S. index ETF options model on top of [`cutebacktests`](https://github.com/cutemarkets/cutebacktests). The public surface is intentionally narrow: one named model (`c36_quality`), reproducible backtests, and explicit assumptions for signal generation, option selection, and out-of-sample evaluation.
 
 The default model is the public alias for `c36_vwap_mr_option_native_quality_v1`, a quote-aware `0-2DTE` VWAP mean-reversion strategy for liquid U.S. index ETFs. This repository does not re-implement the full backtesting engine. It pins one research branch, exposes a small CLI and Python API, and documents the model and evaluation assumptions explicitly.
 
 NOTE: This is not our best model, but a solid one.
+
+![c36_quality ROIC_peak and drawdown](docs/assets/c36-quality-roic-peak-drawdown.svg)
+
+_Figure: trade-level `ROIC_peak` and drawdown from a completed out-of-sample `server2` run of `c36_vwap_mr_option_native_quality_v1`, using the realized OOS trade window from `2025-10-07` to `2026-03-20`._
 
 ## Model In This Repository
 
