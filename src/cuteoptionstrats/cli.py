@@ -1,0 +1,69 @@
+from __future__ import annotations
+
+import argparse
+import json
+from datetime import datetime
+from typing import Any, Dict, Optional
+
+from .models import build_default_model
+from .runtime import run_default_backtest
+
+
+def _parse_date(value: str) -> datetime:
+    return datetime.fromisoformat(value)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Curated public options strategies built on cutebacktests.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    show_model = subparsers.add_parser("show-model", help="Print metadata for the default model.")
+    show_model.add_argument("--json-indent", type=int, default=2)
+
+    run_backtest = subparsers.add_parser("run-backtest", help="Run the default c36 strategy backtest.")
+    run_backtest.add_argument("--ticker", default="SPY")
+    run_backtest.add_argument("--start", required=True, help="YYYY-MM-DD")
+    run_backtest.add_argument("--end", required=True, help="YYYY-MM-DD")
+    run_backtest.add_argument("--env-path", default=".env")
+    run_backtest.add_argument("--db-path", default="")
+    run_backtest.add_argument("--or-width-min", type=float, default=None)
+    run_backtest.add_argument("--initial-equity", type=float, default=100000.0)
+    run_backtest.add_argument("--risk-per-trade", type=float, default=0.02)
+    run_backtest.add_argument("--max-trades-per-day", type=int, default=1)
+    run_backtest.add_argument("--return-trade-log", action="store_true")
+    run_backtest.add_argument("--without-alpaca", action="store_true")
+    run_backtest.add_argument("--json-indent", type=int, default=2)
+    return parser
+
+
+def _run_backtest_payload(args: argparse.Namespace) -> Dict[str, Any]:
+    return run_default_backtest(
+        start=_parse_date(args.start),
+        end=_parse_date(args.end),
+        ticker=str(args.ticker).strip().upper(),
+        env_path=str(args.env_path),
+        db_path=str(args.db_path).strip() or None,
+        include_alpaca=not bool(args.without_alpaca),
+        or_width_min=args.or_width_min,
+        initial_equity=float(args.initial_equity),
+        risk_per_trade=float(args.risk_per_trade),
+        max_trades_per_day=int(args.max_trades_per_day),
+        return_trade_log=bool(args.return_trade_log),
+    )
+
+
+def main(argv: Optional[list[str]] = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.command == "show-model":
+        print(json.dumps(build_default_model().to_dict(), indent=int(args.json_indent), sort_keys=True))
+        return 0
+    if args.command == "run-backtest":
+        print(json.dumps(_run_backtest_payload(args), indent=int(args.json_indent), sort_keys=True, default=str))
+        return 0
+    parser.error(f"unknown command: {args.command}")
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

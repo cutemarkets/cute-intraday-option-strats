@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cuteoptionstrats"
+version = "0.1.0"
+description = "Curated public options strategies built on top of cutebacktests."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "CuteMarkets" }]
+dependencies = [
+  "cutebacktests>=0.2.0",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Office/Business :: Financial",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/cutemarkets/cuteoptionstrats"
+Repository = "https://github.com/cutemarkets/cuteoptionstrats"
+Documentation = "https://github.com/cutemarkets/cuteoptionstrats"
+
+[project.scripts]
+cuteoptionstrats = "cuteoptionstrats.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
