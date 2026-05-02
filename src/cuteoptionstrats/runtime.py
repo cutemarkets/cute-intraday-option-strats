@@ -15,7 +15,7 @@ def build_backtester(
     *,
     settings,
     store: DataStore,
-    include_alpaca: bool = True,
+    include_alpaca: bool = False,
 ) -> IntradayOptionsBacktester:
     return IntradayOptionsBacktester(
         store=store,
@@ -31,7 +31,7 @@ def run_default_backtest(
     ticker: str = "SPY",
     env_path: str = ".env",
     db_path: Optional[str] = None,
-    include_alpaca: bool = True,
+    include_alpaca: bool = False,
     or_width_min: Optional[float] = None,
     **config_overrides: Any,
 ) -> Dict[str, Any]:

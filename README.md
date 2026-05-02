@@ -1,8 +1,15 @@
 # CuteMarkets Intraday Option Strategies
 
-`cuteoptionstrats` packages one curated intraday U.S. index ETF options model on top of [`cutebacktests`](https://github.com/cutemarkets/cutebacktests). The public surface is intentionally narrow: one named model (`c36_quality`), reproducible backtests, and explicit assumptions for signal generation, option selection, and out-of-sample evaluation.
+`cuteoptionstrats` packages one curated intraday options strategy on top of [`cutebacktests`](https://github.com/cutemarkets/cutebacktests). The public surface is intentionally narrow: one named model (`c36_quality`), reproducible backtests, and explicit assumptions for signal generation, option selection, and out-of-sample evaluation.
 
-The default model is the public alias for `c36_vwap_mr_option_native_quality_v1`, a quote-aware `0-2DTE` VWAP mean-reversion strategy for liquid U.S. index ETFs. This repository does not re-implement the full backtesting engine. It pins one research branch, exposes a small CLI and Python API, and documents the model and evaluation assumptions explicitly.
+The default model is the public alias for `c36_vwap_mr_option_native_quality_v1`, a quote-aware `0-2DTE` VWAP mean-reversion options model for liquid U.S. index ETFs. This repository does not re-implement the full backtesting engine. It pins one research branch, exposes a small CLI and Python API, and documents the model and evaluation assumptions explicitly so developers can inspect an intraday options strategy without cloning the private research stack.
+
+Quick links:
+
+- [Read docs](https://cutemarkets.com/docs)
+- [Get API key](https://cutemarkets.com/signup)
+- [Explore `cutebacktests`](https://github.com/cutemarkets/cutebacktests)
+- [Explore `cutemarkets-python`](https://github.com/cutemarkets/cutemarkets-python)
 
 NOTE: This is not our best model, but a solid one.
 
@@ -19,6 +26,19 @@ _Figure: trade-level `ROIC_peak` and drawdown from a completed out-of-sample `se
 - DTE window: `0-2DTE`, target `1DTE`
 - Default universe: `SPY`, `QQQ`
 - Runtime dependency: [`cutebacktests`](https://github.com/cutemarkets/cutebacktests)
+
+## Explore Examples And Artifacts
+
+- [examples/run_c36_quality.py](examples/run_c36_quality.py)
+- [examples/export_trade_log.py](examples/export_trade_log.py)
+- [examples/inspect_model_metadata.py](examples/inspect_model_metadata.py)
+- [docs/assets/c36-quality-example-trades.csv](docs/assets/c36-quality-example-trades.csv) for the public export shape
+
+## Why This Repo Exists Instead Of Publishing Every Strategy
+
+The purpose of this repository is to publish one concrete model surface with explicit assumptions, not to release the full internal strategy set. That makes the public package more useful for developers because they can inspect one complete model card, one CLI, and one stable API without sorting through a large private research archive.
+
+It also keeps the public contract honest. This repo is meant to show how CuteMarkets thinks about model packaging, quote-aware options backtesting, and out-of-sample reporting. It is not meant to imply that every stronger internal strategy should be public.
 
 ## Where `c36` Is Implemented
 
@@ -62,12 +82,10 @@ CUTEOPTIONSTRATS_DB_PATH=data/cuteoptionstrats.duckdb
 
 CUTEMARKETS_API_KEY=your_cutemarkets_key
 CUTEMARKETS_BASE_URL=https://api.cutemarkets.com
-
-ALPACA_API_KEY=your_alpaca_key
-ALPACA_SECRET_KEY=your_alpaca_secret
-ALPACA_DATA_BASE_URL=https://data.alpaca.markets
 EOF
 ```
+
+CuteMarkets is the default API path for this repository. Auxiliary provider support remains available in the runtime, but it is opt-in rather than part of the recommended public setup.
 
 What happens when you run a backtest:
 

@@ -1,0 +1,4 @@
+trade_date,ticker,side,entry_time,exit_time,entry_option,entry_price,exit_price,contracts,exit_reason,return_pct
+2025-10-14,SPY,long,2025-10-14T14:11:00Z,2025-10-14T14:24:00Z,O:SPY251015C00582000,3.10,3.58,2,mr_target_zscore,0.1548
+2025-11-06,QQQ,short,2025-11-06T15:02:00Z,2025-11-06T15:18:00Z,O:QQQ251107P00508000,2.64,2.31,2,opposite_candle,0.1250
+2026-01-09,SPY,long,2026-01-09T15:08:00Z,2026-01-09T15:27:00Z,O:SPY260112C00590000,1.92,1.61,3,stop_loss,-0.1615

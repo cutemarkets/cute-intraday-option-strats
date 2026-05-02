@@ -15,6 +15,7 @@ from cuteoptionstrats import (
     get_default_profile,
     load_settings,
 )
+from cuteoptionstrats import cli as public_cli
 
 
 def test_default_model_metadata_is_stable() -> None:
@@ -67,3 +68,29 @@ def test_load_settings_honors_repo_scoped_data_path_aliases(tmp_path: Path) -> N
     assert settings.cutemarkets_api_key == "cm-key"
     assert settings.data_dir == data_dir
     assert settings.db_path == db_path
+
+
+def test_public_cli_keeps_backwards_compatible_alpaca_flags() -> None:
+    parser = public_cli.build_parser()
+    default_args = parser.parse_args(
+        ["run-backtest", "--ticker", "SPY", "--start", "2025-01-01", "--end", "2025-01-31"]
+    )
+    with_flag = parser.parse_args(
+        ["run-backtest", "--ticker", "SPY", "--start", "2025-01-01", "--end", "2025-01-31", "--with-alpaca"]
+    )
+    without_flag = parser.parse_args(
+        [
+            "run-backtest",
+            "--ticker",
+            "SPY",
+            "--start",
+            "2025-01-01",
+            "--end",
+            "2025-01-31",
+            "--without-alpaca",
+        ]
+    )
+
+    assert default_args.with_alpaca is False
+    assert with_flag.with_alpaca is True
+    assert without_flag.with_alpaca is False

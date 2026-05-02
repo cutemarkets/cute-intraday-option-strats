@@ -31,7 +31,19 @@ def build_parser() -> argparse.ArgumentParser:
     run_backtest.add_argument("--risk-per-trade", type=float, default=0.02)
     run_backtest.add_argument("--max-trades-per-day", type=int, default=1)
     run_backtest.add_argument("--return-trade-log", action="store_true")
-    run_backtest.add_argument("--without-alpaca", action="store_true")
+    run_backtest.add_argument(
+        "--with-alpaca",
+        dest="with_alpaca",
+        action="store_true",
+        help="Optionally enable the auxiliary Alpaca provider. CuteMarkets remains the default API path.",
+    )
+    run_backtest.add_argument(
+        "--without-alpaca",
+        dest="with_alpaca",
+        action="store_false",
+        help=argparse.SUPPRESS,
+    )
+    run_backtest.set_defaults(with_alpaca=False)
     run_backtest.add_argument("--json-indent", type=int, default=2)
     return parser
 
@@ -43,7 +55,7 @@ def _run_backtest_payload(args: argparse.Namespace) -> Dict[str, Any]:
         ticker=str(args.ticker).strip().upper(),
         env_path=str(args.env_path),
         db_path=str(args.db_path).strip() or None,
-        include_alpaca=not bool(args.without_alpaca),
+        include_alpaca=bool(args.with_alpaca),
         or_width_min=args.or_width_min,
         initial_equity=float(args.initial_equity),
         risk_per_trade=float(args.risk_per_trade),

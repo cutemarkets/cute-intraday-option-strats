@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "cuteoptionstrats"
 version = "0.1.0"
-description = "Curated public options strategies built on top of cutebacktests."
+description = "Public intraday options strategy repo with a VWAP mean-reversion model, explicit assumptions, and reproducible backtests."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
@@ -29,9 +29,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cutemarkets/cuteoptionstrats"
-Repository = "https://github.com/cutemarkets/cuteoptionstrats"
-Documentation = "https://github.com/cutemarkets/cuteoptionstrats"
+Homepage = "https://github.com/cutemarkets/cute-intraday-option-strats"
+Repository = "https://github.com/cutemarkets/cute-intraday-option-strats"
+Documentation = "https://cutemarkets.com/docs"
 
 [project.scripts]
 cuteoptionstrats = "cuteoptionstrats.cli:main"
