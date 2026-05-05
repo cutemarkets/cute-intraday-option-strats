@@ -11,6 +11,7 @@ from cuteoptionstrats import (
     DEFAULT_PROFILE_NAME,
     DEFAULT_TICKERS,
     build_default_config,
+    build_effective_config_payload,
     build_default_model,
     get_default_profile,
     load_settings,
@@ -94,3 +95,27 @@ def test_public_cli_keeps_backwards_compatible_alpaca_flags() -> None:
     assert default_args.with_alpaca is False
     assert with_flag.with_alpaca is True
     assert without_flag.with_alpaca is False
+
+
+def test_public_cli_accepts_new_research_commands() -> None:
+    parser = public_cli.build_parser()
+    run_default_universe = parser.parse_args(
+        ["run-default-universe", "--start", "2025-01-01", "--end", "2025-01-31"]
+    )
+    show_effective = parser.parse_args(["show-effective-config"])
+    assert run_default_universe.command == "run-default-universe"
+    assert show_effective.command == "show-effective-config"
+
+
+def test_effective_config_payload_is_stable_for_key_model_fields() -> None:
+    payload = build_effective_config_payload(
+        start=datetime(2025, 1, 1),
+        end=datetime(2025, 1, 31),
+        ticker="SPY",
+    )
+    assert payload["model"]["model_id"] == DEFAULT_MODEL_ID
+    assert payload["strategy_variant"] == "mr_vwap_zscore_v2"
+    assert payload["option_target_dte"] == 1
+    assert payload["option_max_dte"] == 2
+    assert payload["require_option_microstructure_filter"] is True
+    assert payload["mr_zscore_entry"] == 1.35

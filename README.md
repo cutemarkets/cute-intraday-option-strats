@@ -167,6 +167,20 @@ python -m cuteoptionstrats.cli run-backtest \
   --end 2025-01-31
 ```
 
+Run the default universe in one shot:
+
+```bash
+python -m cuteoptionstrats.cli run-default-universe \
+  --start 2025-01-01 \
+  --end 2025-01-31
+```
+
+Inspect the fully resolved config payload:
+
+```bash
+python -m cuteoptionstrats.cli show-effective-config
+```
+
 ## `c36` Model Specification
 
 ### Profile Lineage

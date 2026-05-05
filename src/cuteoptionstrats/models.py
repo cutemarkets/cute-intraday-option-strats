@@ -87,8 +87,31 @@ def build_default_config(
 ) -> IntradayOptionsBacktestConfig:
     profile = get_default_profile(or_width_min=or_width_min)
     cfg_kwargs = profile.to_intraday_strategy_kwargs()
+    cfg_kwargs["option_min_dte"] = int(profile.option_min_dte)
+    cfg_kwargs["option_target_dte"] = int(profile.option_target_dte)
+    cfg_kwargs["option_max_dte"] = int(profile.option_max_dte)
     cfg_kwargs.update(overrides)
     cfg_kwargs["start"] = start
     cfg_kwargs["end"] = end
     cfg_kwargs["ticker"] = str(ticker).strip().upper()
     return IntradayOptionsBacktestConfig(**cfg_kwargs)
+
+
+def build_effective_config_payload(
+    *,
+    start: datetime,
+    end: datetime,
+    ticker: str = "SPY",
+    or_width_min: Optional[float] = None,
+    **overrides: Any,
+) -> Dict[str, Any]:
+    config = build_default_config(
+        start=start,
+        end=end,
+        ticker=ticker,
+        or_width_min=or_width_min,
+        **overrides,
+    )
+    payload = asdict(config)
+    payload["model"] = build_default_model().to_dict()
+    return payload
